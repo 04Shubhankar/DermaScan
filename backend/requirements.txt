@@ -1,6 +1,6 @@
 tensorflow
 pillow
 numpy
-fastapi
+flask
 uvicorn[standard]
 python-multipart
