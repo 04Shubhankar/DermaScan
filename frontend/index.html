@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>DermaScan AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>DermaScan</h1>
+  <p>Upload a dermatoscopic photo of a skin lesion. The model suggests what type it may be and shows where it looked.</p>
+  <label class="switch">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider-round"></span>
+  </label>
+</header>
+
+<div class="demo" id="demo" hidden>
+  Demo mode: results are simulated. Set <code>API_URL</code> in the script to connect your trained model.
+</div>
+
+<div class="grid">
+  <section class="card" aria-label="Image">
+    <div class="lens-wrap">
+      <div class="lens" id="lens">
+        <img id="img" alt="Uploaded skin lesion" hidden>
+        <canvas id="heat" width="512" height="512" hidden></canvas>
+        <div class="scan"></div>
+        <button class="drop" id="drop" type="button">
+          <strong>Add a lesion photo</strong>
+          <span>Drop an image here or tap to browse<br>JPG or PNG, up to 10 MB</span>
+        </button>
+      </div>
+    </div>
+    <input type="file" id="file" accept="image/jpeg,image/png" hidden>
+    <div class="row">
+      <button class="btn primary" id="go" disabled>Analyze lesion</button>
+      <button class="btn" id="reset" hidden>Choose another photo</button>
+    </div>
+    <div class="slider" id="sl">
+      <label for="fade"><span>Heatmap strength</span><span id="fv">55%</span></label>
+      <input type="range" id="fade" min="0" max="100" value="55">
+    </div>
+    <p class="err" id="err" role="alert" hidden></p>
+  </section>
+
+  <section class="card results" aria-live="polite" aria-label="Results">
+    <div class="empty" id="empty">
+      <h2>No analysis yet</h2>
+      <p>Add a photo and select Analyze lesion to see the predicted type, class probabilities, and risk level.</p>
+    </div>
+    <div id="res" hidden>
+      <div class="top">
+        <div><h2 id="pname"></h2><p class="conf" id="pconf"></p></div>
+        <span class="risk" id="risk"><i></i><span></span></span>
+      </div>
+      <p class="note" id="pnote"></p>
+      <div class="warn" id="lowc" hidden>The model is not confident in this result. Treat it as inconclusive and see a dermatologist.</div>
+      <ul class="bars" id="bars"></ul>
+    </div>
+  </section>
+</div>
+
+<!-- ⚠️ Medical disclaimer banner -->
+<div class="warning-banner">
+  <p><strong>This is a screening aid, not a medical diagnosis. Please consult a dermatologist.</strong>
+  Red-to-yellow areas on the heatmap show where the model focused, not where disease is confirmed.</p>
+</div>
+
+<footer>Trained on HAM10000 (about 10,000 dermatoscopic images). Accuracy on phone photos may be lower.</footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
