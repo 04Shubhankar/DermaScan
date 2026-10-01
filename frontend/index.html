@@ -10,68 +10,93 @@
 </head>
 <body>
 <div class="wrap">
-<header>
-  <h1>DermaScan</h1>
-  <p>Upload a dermatoscopic photo of a skin lesion. The model suggests what type it may be and shows where it looked.</p>
-  <label class="switch">
-    <input type="checkbox" id="themeToggle">
-    <span class="slider-round"></span>
-  </label>
-</header>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="DermaScan home">
+      <span class="brand-mark" aria-hidden="true">D</span>
+      <span>DermaScan <span class="brand-suffix">/ AI</span></span>
+    </a>
+    <div class="header-actions">
+      <span class="service-state"><i></i> SKIN IMAGE SCREENING</span>
+      <label class="switch" aria-label="Toggle dark theme">
+        <input type="checkbox" id="themeToggle" aria-label="Dark theme">
+        <span class="slider-round"></span>
+      </label>
+    </div>
+  </header>
 
-<div class="demo" id="demo" hidden>
-  Demo mode: results are simulated. Set <code>API_URL</code> in the script to connect your trained model.
-</div>
-
-<div class="grid">
-  <section class="card" aria-label="Image">
-    <div class="lens-wrap">
-      <div class="lens" id="lens">
-        <img id="img" alt="Uploaded skin lesion" hidden>
-        <canvas id="heat" width="512" height="512" hidden></canvas>
-        <div class="scan"></div>
-        <button class="drop" id="drop" type="button">
-          <strong>Add a lesion photo</strong>
-          <span>Drop an image here or tap to browse<br>JPG or PNG, up to 10 MB</span>
-        </button>
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <div class="intro-copy">
+        <p class="eyebrow"><span></span> A supporting perspective for skin health</p>
+        <h1 id="page-title">A closer look.<br><span>More informed care.</span></h1>
+        <p class="intro-text">Explore an image with an AI screening aid. Review its estimate and areas of focus, then discuss any concerns with a dermatologist.</p>
       </div>
-    </div>
-    <input type="file" id="file" accept="image/jpeg,image/png" hidden>
-    <div class="row">
-      <button class="btn primary" id="go" disabled>Analyze lesion</button>
-      <button class="btn" id="reset" hidden>Choose another photo</button>
-    </div>
-    <div class="slider" id="sl">
-      <label for="fade"><span>Heatmap strength</span><span id="fv">55%</span></label>
-      <input type="range" id="fade" min="0" max="100" value="55">
-    </div>
-    <p class="err" id="err" role="alert" hidden></p>
-  </section>
-
-  <section class="card results" aria-live="polite" aria-label="Results">
-    <div class="empty" id="empty">
-      <h2>No analysis yet</h2>
-      <p>Add a photo and select Analyze lesion to see the predicted type, class probabilities, and risk level.</p>
-    </div>
-    <div id="res" hidden>
-      <div class="top">
-        <div><h2 id="pname"></h2><p class="conf" id="pconf"></p></div>
-        <span class="risk" id="risk"><i></i><span></span></span>
+      <div class="intro-aside" aria-label="Screening steps">
+        <span class="aside-kicker">A SIMPLE TWO-STEP REVIEW</span>
+        <div class="step"><span>01</span><span>Add a clear lesion photo</span></div>
+        <div class="step"><span>02</span><span>Review the model's estimate</span></div>
       </div>
-      <p class="note" id="pnote"></p>
-      <div class="warn" id="lowc" hidden>The model is not confident in this result. Treat it as inconclusive and see a dermatologist.</div>
-      <ul class="bars" id="bars"></ul>
+    </section>
+
+    <div class="grid">
+      <section class="card image-card" aria-label="Image">
+        <div class="card-head">
+          <div><p class="section-index">01 <span>/</span> IMAGE</p><h2>Lesion photo</h2></div>
+          <span class="file-type">JPG OR PNG</span>
+        </div>
+        <div class="lens-wrap">
+          <div class="lens" id="lens">
+            <img id="img" alt="Uploaded skin lesion" hidden>
+            <div class="scan"></div>
+            <button class="drop" id="drop" type="button">
+              <span class="upload-icon" aria-hidden="true">+</span>
+              <strong>Choose an image</strong>
+              <span>Drop a photo here or browse your files</span>
+              <span class="upload-limit">JPG or PNG · up to 5 MB</span>
+            </button>
+          </div>
+        </div>
+        <input type="file" id="file" accept="image/jpeg,image/png" hidden>
+        <div class="row">
+          <button class="btn primary" id="go" disabled>Analyze image <span aria-hidden="true">→</span></button>
+          <button class="btn" id="reset" hidden>Choose another</button>
+        </div>
+        <p class="err" id="err" role="alert" hidden></p>
+      </section>
+
+      <section class="card results" aria-live="polite" aria-label="Results">
+        <div class="card-head result-head">
+          <div><p class="section-index">02 <span>/</span> REVIEW</p><h2>Analysis summary</h2></div>
+        </div>
+        <div class="empty" id="empty">
+          <div class="empty-rule"><span></span><span></span><span></span></div>
+          <h3>Your review starts here</h3>
+          <p>Add a photo to see the predicted class, confidence, and screening risk level.</p>
+          <span class="empty-footnote">No image selected</span>
+        </div>
+        <div id="res" hidden>
+          <div class="top">
+            <div><h2 id="pname"></h2><p class="conf" id="pconf"></p></div>
+            <span class="risk" id="risk"><i></i><span></span></span>
+          </div>
+          <p class="note" id="pnote"></p>
+          <div class="warn" id="lowc" hidden> </div>
+          <div class="probability-heading"><span>CLASS PROBABILITIES</span><span>MODEL ESTIMATE</span></div>
+          <ul class="bars" id="bars"></ul>
+        </div>
+      </section>
     </div>
-  </section>
-</div>
 
-<!-- ⚠️ Medical disclaimer banner -->
-<div class="warning-banner">
-  <p><strong>This is a screening aid, not a medical diagnosis. Please consult a dermatologist.</strong>
-  Red-to-yellow areas on the heatmap show where the model focused, not where disease is confirmed.</p>
-</div>
+    <aside class="warning-banner">
+      <span class="notice-mark" aria-hidden="true">!</span>
+      <p><strong>A screening aid, not a diagnosis.</strong> AI estimates can be wrong and do not replace clinical evaluation. Please consult a dermatologist.</p>
+    </aside>
+  </main>
 
-<footer>Trained on HAM10000 (about 10,000 dermatoscopic images). Accuracy on phone photos may be lower.</footer>
+  <footer>
+    <span>DERMASCAN <span class="footer-dot">·</span> HAM10000 TRAINING DATA</span>
+    <span> </span>
+  </footer>
 </div>
 
 <script src="script.js"></script>
