@@ -1,0 +1,11 @@
+file,true,pred,confidence,correct
+img_01.jpg,mel,nv,0.499,False
+img_02.jpg,bcc,bcc,0.416,True
+img_03.jpg,df,df,0.638,True
+img_04.jpg,bkl,bkl,0.365,True
+img_05.jpg,mel,mel,0.85,True
+img_06.jpg,nv,nv,0.943,True
+img_07.jpg,mel,mel,0.565,True
+img_08.jpg,akiec,akiec,0.572,True
+img_09.jpg,mel,akiec,0.393,False
+img_10.jpg,vasc,vasc,0.958,True
